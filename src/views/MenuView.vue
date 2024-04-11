@@ -16,7 +16,11 @@
         <div class="menu">
           <div class="menu__body">
             <div class="menu__search">
-              <input type="text" />
+              <input
+                type="text"
+                placeholder="Назва страви"
+                class="main-input"
+              />
               <div class="menu__search-button">
                 <img src="@/assets/icons/search.svg" />
               </div>
@@ -75,6 +79,7 @@ export default {
     color: rgb(239, 119, 42);
   }
   &__category {
+    text-wrap: nowrap;
     margin: 16px 0 0 0;
     font-weight: bold;
   }

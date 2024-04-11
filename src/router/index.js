@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import MenuView from "@/views/MenuView";
 import NotFound from "@/views/NotFound";
+import LoginPage from "@/views/LoginPage.vue";
 
 const routes = [
   {
@@ -14,7 +15,16 @@ const routes = [
     name: "menu",
     component: MenuView,
   },
-
+  {
+    path: "/login",
+    name: "login",
+    component: LoginPage,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: LoginPage,
+  },
   {
     path: "/:pathMatch(.*)*",
     name: "notFound",

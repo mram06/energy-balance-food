@@ -37,7 +37,6 @@ export default {
     4px 4px 8px 0px rgba(0, 0, 0, 0.12);
   background: rgb(255, 255, 255);
 
-  border: 1px solid black;
   width: 464px;
   height: 608px;
   padding: 16px;

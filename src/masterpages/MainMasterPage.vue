@@ -16,7 +16,7 @@
           </nav>
           <div class="header__tools">
             <div class="header__tools-language">UA</div>
-            <div class="header__tools-profile">
+            <div @click="onLogin" class="header__tools-profile">
               <img src="@/assets/icons/profile.svg" />
             </div>
             <div class="header__tools-cart">
@@ -76,6 +76,11 @@
 <script>
 export default {
   name: "MainMasterPage",
+  methods: {
+    onLogin() {
+      this.$router.push({ name: "login" });
+    },
+  },
 };
 </script>
 
@@ -118,6 +123,7 @@ main {
   }
 
   &__tools-profile {
+    cursor: pointer;
   }
 
   &__tools-cart {

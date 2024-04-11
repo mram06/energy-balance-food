@@ -195,8 +195,8 @@
               На пробний триденний раціон з будь-якого меню
             </div>
             <div class="discount__inputs">
-              <input type="text" placeholder="Ваше ім’я" />
-              <input type="text" placeholder="+ 38 (" />
+              <input type="text" placeholder="Ваше ім’я" class="main-input" />
+              <input type="text" placeholder="+ 38 (" class="main-input" />
             </div>
             <button class="discount__button">Замовити зі знижкою</button>
           </div>
