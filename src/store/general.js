@@ -10,5 +10,8 @@ export const useGeneralStore = defineStore("general", {
     setError(error) {
       this.error = error;
     },
+    setLoading(value) {
+      this.loading = value;
+    },
   },
 });

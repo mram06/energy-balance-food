@@ -9,8 +9,8 @@
             збалансованого життя через сервіс здорового харчування.
           </div>
           <div class="hero__buttons">
-            <button>Меню</button>
-            <button>Обрати програму</button>
+            <button @click="$router.push({ name: 'menu' })">Меню</button>
+            <button><a href="#programs">Обрати програму</a></button>
           </div>
         </div>
       </div>
@@ -91,61 +91,7 @@
       </div>
     </div>
 
-    <div class="programs">
-      <div class="container">
-        <div class="programs__body">
-          <h2 class="programs__title">Програми харчування</h2>
-          <div class="programs__about">
-            Оптимізовані плани харчування від Energy Balance. Відкрийте для себе
-            вишуканість смаку, збалансованість і ефективність для вашого
-            здоров'я!
-          </div>
-          <div class="programs__row">
-            <div class="programs__card">
-              <div class="programs__card-img">
-                <img src="@/assets/img/avocado.jpeg" />
-              </div>
-              <div class="programs__card-title">Slim</div>
-              <div class="programs__card-energy">1200, 1400, 1600 ккал</div>
-              <div class="programs__card-about">
-                Збалансована програма харчування, яка спрямована на тих, хто
-                хоче схуднути, а також підтримувати досягнутий результат.
-              </div>
-              <div class="programs__card-price">від 650 грн на день</div>
-              <button>Замовити харчування</button>
-            </div>
-
-            <div class="programs__card">
-              <div class="programs__card-img">
-                <img src="@/assets/img/pancake.jpeg" />
-              </div>
-              <div class="programs__card-title">Balance</div>
-              <div class="programs__card-energy">1800, 2000, 2200 ккал</div>
-              <div class="programs__card-about">
-                Повноцінне 5-ти разове харчування, яке ідеально підійде тим, хто
-                хоче харчуватися смачно і корисно щодня.
-              </div>
-              <div class="programs__card-price">від 700 грн на день</div>
-              <button>Замовити харчування</button>
-            </div>
-
-            <div class="programs__card">
-              <div class="programs__card-img">
-                <img src="@/assets/img/oatmeal.jpeg" />
-              </div>
-              <div class="programs__card-title">Muscle</div>
-              <div class="programs__card-energy">2400, 2600 ккал</div>
-              <div class="programs__card-about">
-                Раціон підходить людям з високою фізичною активністю або великою
-                кількістю тренувань на тиждень
-              </div>
-              <div class="programs__card-price">від 750 грн на день</div>
-              <button>Замовити харчування</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <programs-block />
     <energy-calc />
 
     <div class="faq">
@@ -158,8 +104,12 @@
               :key="index"
               class="card"
               animation="slide"
-              :open="isOpen == index"
-              @open="isOpen = index"
+              :open="position == index"
+              @open="
+                position = index;
+                isOpen = true;
+              "
+              @close="isOpen = false"
             >
               <template #trigger>
                 <div class="card-header" role="button">
@@ -168,7 +118,7 @@
                   </p>
                   <a class="card-header-icon"
                     ><img
-                      :class="{ open: isOpen == index }"
+                      :class="{ open: position == index && isOpen === true }"
                       src="@/assets/icons/arrow.svg"
                   /></a>
                 </div>
@@ -209,34 +159,17 @@
 <script>
 import MainMasterPage from "@/masterpages/MainMasterPage.vue";
 import EnergyCalc from "@/components/EnergyCalc.vue";
+import ProgramsBlock from "@/components/ProgramsBlock";
+import collapses from "@/constants/collapses";
 
 export default {
   name: "HomeView",
-  components: { MainMasterPage, EnergyCalc },
+  components: { MainMasterPage, EnergyCalc, ProgramsBlock },
   data() {
     return {
-      isOpen: null,
-      collapses: [
-        {
-          title: "Як працює Energy Balance?",
-          text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.  <br />
-          Nulla accumsan, metus ultrices eleifend gravida,   <br />
-          nulla nunc varius lectus, nec rutrum justo nibh eu lectus.  <br />
-          Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.`,
-        },
-        {
-          title: "Чи можливий вибір діетичних обмежень?",
-          text: "Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. <br />",
-        },
-        {
-          title: "Які гарантії щодо якості інгредієнтів?",
-          text: "Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.",
-        },
-        {
-          title: "Як часто можна змінювати свій план харчування?",
-          text: "Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.",
-        },
-      ],
+      position: null,
+      isOpen: false,
+      collapses: collapses,
     };
   },
 };
@@ -352,56 +285,7 @@ export default {
   }
 }
 .programs {
-  &__body {
-    padding: 80px 112px;
-  }
-
-  &__title {
-    text-align: center;
-  }
-
-  &__about {
-    margin: 0 auto;
-    margin-top: 16px;
-    text-align: center;
-    max-width: 590px;
-  }
-
-  &__row {
-    margin: 32px 0 0 0;
-    display: flex;
-    gap: 32px;
-  }
-
-  &__card {
-    border-radius: 4px;
-    box-shadow: 8px 8px 16px 0px rgba(0, 0, 0, 0.22),
-      4px 4px 8px 0px rgba(0, 0, 0, 0.12);
-
-    width: 384px;
-    padding: 16px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    &-img {
-    }
-    &-title {
-      font-size: 24px;
-      font-weight: bold;
-      color: rgb(16, 16, 16);
-    }
-    &-energy {
-    }
-    &-about {
-    }
-    &-price {
-    }
-    button {
-      width: 221px;
-    }
-  }
+  padding: 80px 0 72px 0;
 }
 .faq {
   &__body {
@@ -460,7 +344,7 @@ export default {
 }
 .discount {
   &__body {
-    background: url("@/assets/backgrounds/kiwi.jpeg") 330px no-repeat,
+    background: url("@/assets/img/qiwi.png") 330px no-repeat,
       linear-gradient(
         90deg,
         rgb(216, 180, 31),

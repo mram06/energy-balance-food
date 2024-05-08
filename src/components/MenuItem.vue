@@ -1,15 +1,21 @@
+<!-- Реалізація компонента menu-item (картка товару) -->
 <template>
   <div class="item">
+    <!-- Отримання шляху до зображення, щоб відобразити у картці товару -->
     <div class="item__img"><img :src="itemData.imgSrc" /></div>
+    <!-- Відображення назви страви -->
     <div class="item__title">{{ itemData.title }}</div>
     <div class="item__energy">
+      <!-- Відобрадення КБЖВ з масиву energy у об'єкті itemData -->
       <div>К - {{ itemData.energy[0] }}</div>
       <div>Б - {{ itemData.energy[1] }}</div>
       <div>Ж - {{ itemData.energy[2] }}</div>
       <div>В - {{ itemData.energy[3] }}</div>
     </div>
-    <div class="item__about">{{ itemData.description }}</div>
+    <!-- Відображення складу страви -->
+    <div class="item__about">{{ itemData.ingredients }}</div>
     <div class="item__buy">
+      <!-- Відображення ціни страви -->
       <div class="item__buy-price">{{ itemData.price }} грн</div>
       <div class="item__buy-button">
         <img src="@/assets/icons/cart_white.svg" />
@@ -19,9 +25,11 @@
 </template>
 
 <script>
+// Дані для відображення інформації про товар надходять через батьківський елемент у вигляді об'єкта, який отримує дані з БД
 export default {
   name: "MenuItem",
   props: {
+    // отриманий об'єкт
     itemData: {
       type: Object,
       default: () => ({}),
@@ -37,7 +45,6 @@ export default {
     4px 4px 8px 0px rgba(0, 0, 0, 0.12);
   background: rgb(255, 255, 255);
 
-  width: 464px;
   height: 608px;
   padding: 16px;
 
@@ -76,6 +83,11 @@ export default {
     align-items: center;
     &-price {
       font-family: "Raleway", sans-serif;
+      -webkit-font-feature-settings: "lnum";
+      -moz-font-feature-settings: "lnum";
+      -ms-font-feature-settings: "lnum";
+      -o-font-feature-settings: "lnum";
+      font-feature-settings: "lnum";
       font-size: 24px;
       font-weight: 700;
       line-height: 32px;

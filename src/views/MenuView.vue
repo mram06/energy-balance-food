@@ -3,20 +3,93 @@
     <div class="container">
       <div class="menu-row">
         <aside class="aside">
-          <h2>Меню</h2>
-          <div class="aside__category active">Сніданки</div>
-          <div class="aside__category">Основні страви</div>
-          <div class="aside__category">Салати</div>
-          <div class="aside__category">Супи</div>
-          <div class="aside__category">Пасти</div>
-          <div class="aside__category">Круасани</div>
-          <div class="aside__category">Десерти</div>
+          <div class="aside__body">
+            <h2>Меню</h2>
+            <a
+              href="#breakfast"
+              :class="[
+                'aside__category',
+                {
+                  active: activeCategory === 0,
+                },
+              ]"
+            >
+              Сніданки
+            </a>
+            <a
+              href="#main"
+              :class="[
+                'aside__category',
+                {
+                  active: activeCategory === 1,
+                },
+              ]"
+            >
+              Основні страви
+            </a>
+            <a
+              href="#salad"
+              :class="[
+                'aside__category',
+                {
+                  active: activeCategory === 2,
+                },
+              ]"
+            >
+              Салати
+            </a>
+            <a
+              href="#soup"
+              :class="[
+                'aside__category',
+                {
+                  active: activeCategory === 3,
+                },
+              ]"
+            >
+              Супи
+            </a>
+            <a
+              href="#pasta"
+              :class="[
+                'aside__category',
+                {
+                  active: activeCategory === 4,
+                },
+              ]"
+            >
+              Пасти
+            </a>
+            <a
+              href="#croissants"
+              :class="[
+                'aside__category',
+                {
+                  active: activeCategory === 5,
+                },
+              ]"
+            >
+              Круасани
+            </a>
+            <a
+              href="#desserts"
+              :class="[
+                'aside__category',
+                {
+                  active: activeCategory === 6,
+                },
+              ]"
+            >
+              Десерти
+            </a>
+          </div>
         </aside>
 
         <div class="menu">
           <div class="menu__body">
             <div class="menu__search">
               <input
+                v-model="searchName"
                 type="text"
                 placeholder="Назва страви"
                 class="main-input"
@@ -25,12 +98,16 @@
                 <img src="@/assets/icons/search.svg" />
               </div>
             </div>
-            <div class="menu__category">
-              <div class="menu__category-title">Сніданки</div>
-              <div class="menu__category-container">
-                <menu-item :item-data="itemData" />
-              </div>
-            </div>
+
+            <menu-item-panel @visible-category="onVisible" />
+          </div>
+        </div>
+      </div>
+      <div class="banner">
+        <div class="container">
+          <div class="banner__body">
+            <h2 class="banner__title">Харчуйся з користю разом з</h2>
+            <h2 class="banner__logo">Energy <span>Balance</span></h2>
           </div>
         </div>
       </div>
@@ -40,29 +117,40 @@
 
 <script>
 import MainMasterPage from "@/masterpages/MainMasterPage.vue";
-import MenuItem from "@/components/MenuItem.vue";
+import MenuItemPanel from "@/components/MenuItemPanel.vue";
+import { mapActions, mapState } from "pinia";
+import { useItemsStore } from "@/store/modules/items";
 
 export default {
   name: "MenuView",
-  components: { MainMasterPage, MenuItem },
+  components: { MainMasterPage, MenuItemPanel },
   data() {
     return {
-      itemData: {
-        imgSrc: require("@/assets/img/shakshukha.jpeg"),
-        title: "Шакшука",
-        energy: [352, 15.56, 16.34, 31.42],
-        description:
-          "листя салату, томати, куряча грудка, яйце, пармезан, сухарики. соус часниково-горіховий (горіх грецький, часник запечений, вершки, майонез)",
-        price: "219",
-      },
+      activeCategory: null,
+      searchName: null,
     };
+  },
+  computed: {
+    ...mapState(useItemsStore, ["isDataLoaded"]),
+  },
+  methods: {
+    ...mapActions(useItemsStore, ["setSearchByName"]),
+    onVisible(index) {
+      this.activeCategory = index;
+      console.log(index);
+    },
+  },
+  watch: {
+    searchName(newValue) {
+      this.setSearchByName(newValue);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .menu-row {
-  padding: 0 112px;
+  padding: 0 0 0 112px;
   display: flex;
   gap: 62px;
 }
@@ -71,6 +159,10 @@ export default {
 }
 
 .aside {
+  width: 116px;
+  &__body {
+    position: fixed;
+  }
   padding: 48px 0 0 0;
   :nth-child(2) {
     margin: 24px 0 0 0;
@@ -87,7 +179,7 @@ export default {
 .menu {
   width: 100%;
   &__body {
-    padding: 48px;
+    padding: 48px 112px 48px 48px;
     background: rgb(242, 240, 238);
   }
 
@@ -96,6 +188,7 @@ export default {
     input {
       width: 100%;
       padding-right: 40px;
+      font-size: 16px;
     }
     &-button {
       cursor: pointer;
@@ -120,5 +213,36 @@ export default {
       margin: 24px 0 0 0;
     }
   }
+}
+.banner {
+  &__body {
+    padding: 64px 0 48px 168px;
+    background: url("@/assets/img/qiwi.png") 80% 0 no-repeat,
+      linear-gradient(
+        180deg,
+        rgb(231, 202, 73) 0%,
+        rgb(232, 203, 73) 50.248%,
+        rgb(232, 203, 73) 100%
+      );
+  }
+  h2 {
+    max-width: 671px;
+  }
+  &__title {
+    color: white;
+  }
+
+  &__logo {
+    margin: 8px 0 0 0;
+    text-align: end;
+    line-height: 72px;
+    font-size: 60px;
+    color: white;
+    span {
+      font-style: italic;
+    }
+  }
+}
+.container {
 }
 </style>

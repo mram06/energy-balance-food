@@ -10,15 +10,23 @@
           >
           <nav class="header__menu">
             <router-link :to="{ name: 'menu' }">Меню</router-link>
-            <a href="">Програми</a>
-            <a href="">Для кого</a>
+            <router-link :to="{ name: 'programs' }">Програми</router-link>
+            <router-link :to="{ name: 'forWhom' }">Для кого</router-link>
             <a href="">Як працює</a>
           </nav>
           <div class="header__tools">
             <div class="header__tools-language">UA</div>
-            <div @click="onLogin" class="header__tools-profile">
-              <img src="@/assets/icons/profile.svg" />
-            </div>
+            <template v-if="user">
+              <div class="header__tools-profile">
+                <img :src="user.photoURL" />
+              </div>
+              <div @click="logout">Вихід</div>
+            </template>
+            <template v-else>
+              <div @click="onLogin" class="header__tools-profile">
+                <img src="@/assets/icons/profile.svg" />
+              </div>
+            </template>
             <div class="header__tools-cart">
               <img src="@/assets/icons/cart.svg" />
             </div>
@@ -27,7 +35,9 @@
       </div>
     </header>
     <main class="content">
-      <slot></slot>
+      <loading-page v-if="loading" />
+      <error-page v-else-if="error" />
+      <template v-if="!error"><slot></slot></template>
     </main>
     <footer class="footer">
       <div class="container">
@@ -74,20 +84,35 @@
 </template>
 
 <script>
+import { useAuthStore } from "@/store/modules/auth";
+import { useGeneralStore } from "@/store/general";
+import { mapActions, mapState } from "pinia";
+import LoadingPage from "@/components/LoadingPage";
+import ErrorPage from "@/components/ErrorPage";
+
 export default {
   name: "MainMasterPage",
+  components: {
+    LoadingPage,
+    ErrorPage,
+  },
+  computed: {
+    ...mapState(useAuthStore, ["user"]),
+    ...mapState(useGeneralStore, ["loading", "error"]),
+  },
   methods: {
+    ...mapActions(useAuthStore, ["loginWithCredential", "logout"]),
     onLogin() {
       this.$router.push({ name: "login" });
     },
+  },
+  mounted() {
+    this.loginWithCredential();
   },
 };
 </script>
 
 <style lang="scss" scoped>
-main {
-  padding: 64px 0 0 0;
-}
 .header {
   background: white;
   position: fixed;
@@ -117,16 +142,20 @@ main {
   &__tools {
     display: flex;
     gap: 16px;
-  }
+    &-language {
+    }
 
-  &__tools-language {
-  }
+    &-profile {
+      cursor: pointer;
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
+    }
 
-  &__tools-profile {
-    cursor: pointer;
-  }
-
-  &__tools-cart {
+    &-cart {
+    }
   }
 }
 .footer {

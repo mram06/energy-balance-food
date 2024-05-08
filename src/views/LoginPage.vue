@@ -13,6 +13,7 @@
               <label>
                 Електронна пошта
                 <input
+                  v-model="email"
                   type="email"
                   placeholder="Введіть ел. пошту"
                   class="login__inputs-email"
@@ -21,6 +22,7 @@
               <label>
                 Пароль
                 <input
+                  v-model="password"
                   type="password"
                   placeholder="Введіть пароль"
                   class="login__inputs-password"
@@ -28,7 +30,7 @@
               </label>
             </div>
             <a href="#" class="login__forgot_password">Забули пароль?</a>
-            <button class="login__action_button">
+            <button @click="onAction" class="login__action_button">
               {{ actionButtonTitle }}
             </button>
             <div class="login__or">
@@ -36,7 +38,7 @@
               <div>або</div>
               <div></div>
             </div>
-            <button class="login__with_google">
+            <button @click="loginWithGoogle" class="login__with_google">
               <span><img src="@/assets/icons/google.svg" /></span>Продовжити з
               Google
             </button>
@@ -49,15 +51,37 @@
 
 <script>
 import MainMasterPage from "@/masterpages/MainMasterPage.vue";
+import { mapActions } from "pinia";
+import { useAuthStore } from "@/store/modules/auth";
 
 export default {
   name: "LoginPage",
   components: {
     MainMasterPage,
   },
+  data() {
+    return {
+      email: null,
+      password: null,
+    };
+  },
   computed: {
     actionButtonTitle() {
       return this.$route.name === "login" ? "Увійти" : "Зареєструватися";
+    },
+  },
+  methods: {
+    ...mapActions(useAuthStore, [
+      "loginWithGoogle",
+      "signUpWithEmailAndPassword",
+      "signInEmailAndPassword",
+    ]),
+    onAction() {
+      if (this.$route.name === "signup") {
+        this.signUpWithEmailAndPassword(this.email, this.password);
+      } else {
+        this.signInEmailAndPassword(this.email, this.password);
+      }
     },
   },
 };
