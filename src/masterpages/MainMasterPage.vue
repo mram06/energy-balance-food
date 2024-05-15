@@ -12,10 +12,8 @@
             <router-link :to="{ name: 'menu' }">Меню</router-link>
             <router-link :to="{ name: 'programs' }">Програми</router-link>
             <router-link :to="{ name: 'forWhom' }">Для кого</router-link>
-            <a href="">Як працює</a>
           </nav>
           <div class="header__tools">
-            <div class="header__tools-language">UA</div>
             <template v-if="user">
               <div class="header__tools-profile">
                 <img :src="user.photoURL" />
@@ -70,7 +68,6 @@
             </div>
           </div>
           <div class="footer__bottom">
-            <div class="footer__language">UA</div>
             <div class="footer__policy">
               <a>Terms & Conditions</a>
               <a>Privacy Policy</a>
@@ -223,10 +220,6 @@ export default {
     }
   }
 
-  &__language {
-    font-family: "Raleway", sans-serif;
-  }
-
   &__policy {
     a {
       color: rgb(64, 64, 64);
@@ -237,7 +230,7 @@ export default {
   }
   &__bottom {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin: 32px 0 0 0;
   }
 }
