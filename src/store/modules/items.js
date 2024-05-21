@@ -60,6 +60,14 @@ export const useItemsStore = defineStore("items", {
           generalStore.setLoading(false);
         });
     },
+    getItemByItemId(itemId) {
+      const generalStore = useGeneralStore();
+      generalStore.setError(null);
+      generalStore.setLoading(true);
+      collectionDB
+        .getItemById(itemId)
+        .catch((error) => generalStore.setError(error));
+    },
     setSearchByName(name) {
       this.searchByName = name;
     },

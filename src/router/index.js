@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NotFound from "@/views/NotFound";
-import LoginPage from "@/views/LoginPage.vue";
 
 const routes = [
   {
@@ -27,12 +26,17 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: LoginPage,
+    component: () => import("@/views/LoginPage"),
   },
   {
     path: "/signup",
     name: "signup",
-    component: LoginPage,
+    component: () => import("@/views/LoginPage"),
+  },
+  {
+    path: "/cart",
+    name: "cart",
+    component: () => import("@/views/CartView"),
   },
   {
     path: "/admin-panel",

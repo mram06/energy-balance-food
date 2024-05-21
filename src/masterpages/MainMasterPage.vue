@@ -25,7 +25,10 @@
                 <img src="@/assets/icons/profile.svg" />
               </div>
             </template>
-            <div class="header__tools-cart">
+            <div
+              @click="$router.push({ name: 'cart' })"
+              class="header__tools-cart"
+            >
               <img src="@/assets/icons/cart.svg" />
             </div>
           </div>
@@ -152,6 +155,7 @@ export default {
     }
 
     &-cart {
+      cursor: pointer;
     }
   }
 }

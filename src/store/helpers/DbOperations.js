@@ -8,6 +8,8 @@ import {
   updateDoc,
   query,
   where,
+  setDoc,
+  getDoc,
 } from "firebase/firestore/lite";
 
 class DbOperations {
@@ -58,6 +60,19 @@ class DbOperations {
         });
     });
   }
+  getItemById(itemId) {
+    return new Promise((resolve, reject) => {
+      const docRef = doc(this.dbCollection, itemId);
+      getDoc(docRef)
+        .then((docSnap) => {
+          if (docSnap.exists()) resolve(docSnap.data());
+          else resolve({});
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
   updateItem(itemId, data) {
     return new Promise((resolve, reject) => {
       const oldDocRef = doc(this.dbCollection, itemId);
@@ -83,6 +98,59 @@ class DbOperations {
         .catch((error) => {
           reject(error);
         });
+    });
+  }
+  addItemWithCustomId(id, item) {
+    return new Promise((resolve, reject) => {
+      setDoc(doc(this.dbCollection, id), item)
+        .then(() => {
+          resolve(true);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+  addItemToArray(id, arrayProperty, value) {
+    return new Promise((resolve, reject) => {
+      this.getItemById(id).then((item) => {
+        let addedCount = false;
+        if (item.items) {
+          const currentArray = item.items.map((item) => {
+            if (item.itemId === value) {
+              item.count += 1;
+              addedCount = true;
+            }
+            return item;
+          });
+          console.log(currentArray);
+          if (!addedCount) currentArray.push({ itemId: value, count: 1 });
+          updateDoc(doc(this.dbCollection, id), {
+            [arrayProperty]: currentArray,
+          })
+            .then(() => {
+              resolve(true);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        } else {
+          this.addItemWithCustomId(id, {
+            [arrayProperty]: [
+              {
+                itemId: value,
+                count: 1,
+              },
+            ],
+          })
+            .then(() => {
+              resolve(true);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        }
+      });
     });
   }
 }

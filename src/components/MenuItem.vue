@@ -17,7 +17,7 @@
     <div class="item__buy">
       <!-- Відображення ціни страви -->
       <div class="item__buy-price">{{ itemData.price }} грн</div>
-      <div class="item__buy-button">
+      <div @click="onAddToCart(itemData.id)" class="item__buy-button">
         <img src="@/assets/icons/cart_white.svg" />
       </div>
     </div>
@@ -25,6 +25,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "pinia";
+import { useCartStore } from "@/store/modules/cart";
+import { useAuthStore } from "@/store/modules/auth";
 // Дані для відображення інформації про товар надходять через батьківський елемент у вигляді об'єкта, який отримує дані з БД
 export default {
   name: "MenuItem",
@@ -33,6 +36,17 @@ export default {
     itemData: {
       type: Object,
       default: () => ({}),
+    },
+  },
+  computed: {
+    ...mapState(useAuthStore, ["user"]),
+  },
+  methods: {
+    ...mapActions(useCartStore, ["addToCart"]),
+    onAddToCart(itemId) {
+      if (this.user) {
+        this.addToCart(this.user.uid, itemId);
+      }
     },
   },
 };

@@ -10,7 +10,6 @@ export default function (itemsList) {
   };
   itemsList.forEach((item) => {
     newObj[item.category].push(item);
-    console.log(newObj[item.category]);
   });
   return newObj;
 }

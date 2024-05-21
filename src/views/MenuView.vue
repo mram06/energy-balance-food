@@ -137,7 +137,6 @@ export default {
     ...mapActions(useItemsStore, ["setSearchByName"]),
     onVisible(index) {
       this.activeCategory = index;
-      console.log(index);
     },
   },
   watch: {
