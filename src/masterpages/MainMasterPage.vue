@@ -18,7 +18,7 @@
               <div class="header__tools-profile">
                 <img :src="user.photoURL" />
               </div>
-              <div @click="logout">Вихід</div>
+              <div @click="logout" class="header__tools-logout">Вихід</div>
             </template>
             <template v-else>
               <div @click="onLogin" class="header__tools-profile">
@@ -30,6 +30,9 @@
               class="header__tools-cart"
             >
               <img src="@/assets/icons/cart.svg" />
+              <template v-if="getItemsCount">
+                <div class="header__tools-count">{{ getItemsCount }}</div>
+              </template>
             </div>
           </div>
         </div>
@@ -89,6 +92,7 @@ import { useGeneralStore } from "@/store/general";
 import { mapActions, mapState } from "pinia";
 import LoadingPage from "@/components/LoadingPage";
 import ErrorPage from "@/components/ErrorPage";
+import { useCartStore } from "@/store/modules/cart";
 
 export default {
   name: "MainMasterPage",
@@ -99,6 +103,7 @@ export default {
   computed: {
     ...mapState(useAuthStore, ["user"]),
     ...mapState(useGeneralStore, ["loading", "error"]),
+    ...mapState(useCartStore, ["getItemsCount"]),
   },
   methods: {
     ...mapActions(useAuthStore, ["loginWithCredential", "logout"]),
@@ -142,8 +147,6 @@ export default {
   &__tools {
     display: flex;
     gap: 16px;
-    &-language {
-    }
 
     &-profile {
       cursor: pointer;
@@ -153,9 +156,30 @@ export default {
         border-radius: 50%;
       }
     }
+    &-logout {
+      cursor: pointer;
+    }
 
     &-cart {
+      position: relative;
       cursor: pointer;
+    }
+    &-count {
+      position: absolute;
+      right: -7px;
+      top: -7px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 16px;
+      padding: 5px;
+      border-radius: 50%;
+      background-color: red;
+
+      text-align: center;
+      font-size: 10px;
+      color: white;
     }
   }
 }

@@ -123,7 +123,6 @@ class DbOperations {
             }
             return item;
           });
-          console.log(currentArray);
           if (!addedCount) currentArray.push({ itemId: value, count: 1 });
           updateDoc(doc(this.dbCollection, id), {
             [arrayProperty]: currentArray,
@@ -142,6 +141,37 @@ class DbOperations {
                 count: 1,
               },
             ],
+          })
+            .then(() => {
+              resolve(true);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        }
+      });
+    });
+  }
+  deleteItemFromArray(id, arrayProperty, value) {
+    return new Promise((resolve, reject) => {
+      this.getItemById(id).then((item) => {
+        if (item.items) {
+          let itemToDelete;
+          let currentArray = item.items.map((item) => {
+            if (item.itemId === value) {
+              if (item.count > 1) item.count -= 1;
+              else itemToDelete = item.itemId;
+            }
+            return item;
+          });
+          if (itemToDelete)
+            currentArray = currentArray.filter(
+              (item) => item.itemId !== itemToDelete
+            );
+          console.log(currentArray);
+
+          updateDoc(doc(this.dbCollection, id), {
+            [arrayProperty]: currentArray,
           })
             .then(() => {
               resolve(true);

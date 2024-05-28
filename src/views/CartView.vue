@@ -3,38 +3,25 @@
     <div class="container">
       <div class="cart__body">
         <h2>Ваше замовлення</h2>
-        {{ getLoadedCart }}
-        <div class="cart__reset">Очистити кошик</div>
+        <div @click="onEmptyCart" class="cart__reset">Очистити кошик</div>
         <div class="cart__container">
-          <div class="cart__item">
+          <div v-for="item in getLoadedCart" :key="item.id" class="cart__item">
             <div class="cart__item-img">
-              <img src="@/assets/img/shakshukha.jpeg" />
+              <img :src="item.imgSrc" />
             </div>
-            <div class="cart__item-title">Шакшука</div>
-            <div class="cart__item-price">219 грн</div>
+            <div class="cart__item-title">{{ item.title }}</div>
+            <div class="cart__item-price">{{ item.price }} грн</div>
             <div class="cart__item-count">
-              <button>-</button>
-              <div>2</div>
-              <button>+</button>
-            </div>
-          </div>
-          <div class="cart__item">
-            <div class="cart__item-img">
-              <img src="@/assets/img/shakshukha.jpeg" />
-            </div>
-            <div class="cart__item-title">Шакшука</div>
-            <div class="cart__item-price">219 грн</div>
-            <div class="cart__item-count">
-              <button>-</button>
-              <div>2</div>
-              <button>+</button>
+              <button @click="onCount(item.id, 'decrease')">-</button>
+              <div>{{ item.count }}</div>
+              <button @click="onCount(item.id, 'increase')">+</button>
             </div>
           </div>
         </div>
 
         <div class="cart__summary">
           <div class="cart__summary-title">Разом замовлення:</div>
-          <div class="cart__summary-price">576 грн</div>
+          <div class="cart__summary-price">{{ getSummary }} грн</div>
         </div>
       </div>
     </div>
@@ -45,6 +32,8 @@
 import MainMasterPage from "@/masterpages/MainMasterPage";
 import { mapState, mapActions } from "pinia";
 import { useCartStore } from "@/store/modules/cart";
+import { useAuthStore } from "@/store/modules/auth";
+import { useItemsStore } from "@/store/modules/items";
 
 export default {
   name: "CartView",
@@ -52,13 +41,37 @@ export default {
     MainMasterPage,
   },
   computed: {
-    ...mapState(useCartStore, ["getLoadedCart"]),
+    ...mapState(useCartStore, ["getLoadedCart", "getSummary"]),
+    ...mapState(useAuthStore, ["user"]),
   },
   methods: {
-    ...mapActions(useCartStore, ["loadList"]),
+    ...mapActions(useCartStore, [
+      "addToCart",
+      "deleteFromCart",
+      "loadUserCart",
+      "emptyCart",
+    ]),
+    ...mapActions(useItemsStore, ["loadList"]),
+    onCount(itemId, operation) {
+      if (operation === "increase") this.addToCart(this.user.uid, itemId);
+      else this.deleteFromCart(this.user.uid, itemId);
+    },
+    onEmptyCart() {
+      this.emptyCart(this.user.uid);
+    },
   },
   mounted() {
     this.loadList();
+  },
+  watch: {
+    user: {
+      handler(newValue) {
+        if (newValue) {
+          this.loadUserCart();
+        }
+      },
+      deep: true,
+    },
   },
 };
 </script>

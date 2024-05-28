@@ -15,6 +15,7 @@ export const useItemsStore = defineStore("items", {
   getters: {
     getItemById: (state) => (itemId) =>
       state.itemsList.find((item) => item.id == itemId),
+
     getFilteredItemsList: (state) =>
       state.itemsList.filter((item) =>
         isCorrespondToFilter(item, state.searchByName)

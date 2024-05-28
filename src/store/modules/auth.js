@@ -10,6 +10,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import { useCartStore } from "./cart";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -50,6 +51,8 @@ export const useAuthStore = defineStore("auth", {
           signInWithCredential(auth, credential)
             .then((loginResult) => {
               this.saveLoginUserData(loginResult);
+              const cartStore = useCartStore();
+              cartStore.loadUserCart();
               resolve(loginResult);
             })
             .catch((error) => {

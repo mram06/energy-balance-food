@@ -3,43 +3,49 @@ const collectionDB = new DbOperations("cart");
 
 import { defineStore } from "pinia";
 import { useGeneralStore } from "../general";
+import { useAuthStore } from "./auth";
 import { useItemsStore } from "./items";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
-    itemsList: [],
+    cartItemsList: [],
   }),
   getters: {
     getLoadedCart: (state) => {
       const itemsStore = useItemsStore();
-      const loadedCart = state.itemsList[0]?.items.map((item) => {
-        item = itemsStore.getItemByItemId(item.itemId);
-        return item;
+      return state.cartItemsList?.map((item) => {
+        const loadedItem = {
+          count: item.count,
+          ...itemsStore.getItemById(item.itemId),
+        };
+        return loadedItem;
       });
-      console.log(loadedCart);
-      return loadedCart;
     },
+    getSummary: (state) =>
+      state.getLoadedCart?.reduce(
+        (prevVal, item) => prevVal + item.price * item.count,
+        0
+      ),
+    getItemsCount: (state) =>
+      state.cartItemsList?.reduce((prevVal, item) => prevVal + item.count, 0),
   },
   actions: {
     setItemsList(itemsList) {
-      this.itemsList = itemsList;
+      this.cartItemsList = itemsList;
       this.isDataLoaded = true;
     },
-    loadList() {
+    loadUserCart() {
       const generalStore = useGeneralStore();
+      const authStore = useAuthStore();
       generalStore.setError(null);
-      generalStore.setLoading(true);
 
       collectionDB
-        .loadItemsList()
+        .getItemById(authStore.user.uid)
         .then((list) => {
-          this.setItemsList(list);
+          this.setItemsList(list.items);
         })
         .catch((error) => {
           generalStore.setError(error);
-        })
-        .finally(() => {
-          generalStore.setLoading(false);
         });
     },
     addToCart(userId, itemId) {
@@ -50,6 +56,33 @@ export const useCartStore = defineStore("cart", {
         .addItemToArray(userId, "items", itemId)
         .catch((error) => generalStore.setError(error))
         .finally(() => generalStore.setLoading(false));
+      setTimeout(() => {
+        this.loadUserCart();
+      }, 400);
+    },
+    deleteFromCart(userId, itemId) {
+      const generalStore = useGeneralStore();
+      generalStore.setError(null);
+      generalStore.setLoading(true);
+      collectionDB
+        .deleteItemFromArray(userId, "items", itemId)
+        .catch((error) => generalStore.setError(error))
+        .finally(() => generalStore.setLoading(false));
+      setTimeout(() => {
+        this.loadUserCart();
+      }, 400);
+    },
+    emptyCart(userId) {
+      const generalStore = useGeneralStore();
+      generalStore.setError(null);
+      generalStore.setLoading(true);
+      collectionDB
+        .deleteItem(userId)
+        .catch((error) => generalStore.setError(error))
+        .finally(() => generalStore.setLoading(false));
+      setTimeout(() => {
+        this.loadUserCart();
+      }, 400);
     },
   },
 });
