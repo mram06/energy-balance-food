@@ -15,7 +15,7 @@
           </nav>
           <div class="header__tools">
             <template v-if="user">
-              <div class="header__tools-profile">
+              <div @click="onLogin" class="header__tools-profile">
                 <img :src="user.photoURL" />
               </div>
               <div @click="logout" class="header__tools-logout">Вихід</div>
@@ -41,7 +41,7 @@
     <main class="content">
       <loading-page v-if="loading" />
       <error-page v-else-if="error" />
-      <template v-if="!error"><slot></slot></template>
+      <slot></slot>
     </main>
     <footer class="footer">
       <div class="container">
@@ -108,7 +108,7 @@ export default {
   methods: {
     ...mapActions(useAuthStore, ["loginWithCredential", "logout"]),
     onLogin() {
-      this.$router.push({ name: "login" });
+      this.$router.push({ name: "profile" });
     },
   },
   mounted() {

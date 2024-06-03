@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NotFound from "@/views/NotFound";
+import { useAuthStore } from "@/store/modules/auth";
 
 const routes = [
   {
@@ -37,6 +38,25 @@ const routes = [
     path: "/cart",
     name: "cart",
     component: () => import("@/views/CartView"),
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: () => import("@/views/ProfileView"),
+    meta: { requireAuth: true },
+    children: [
+      {
+        path: "orders",
+        name: "orders",
+        component: () => import("@/components/OrdersBlock"),
+      },
+      {
+        path: "settings",
+        name: "settings",
+        component: () => import("@/components/SettingsBlock"),
+      },
+    ],
   },
   {
     path: "/admin-panel",
@@ -52,7 +72,19 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
+  mode: "history",
   routes,
+});
+
+router.beforeEach((to) => {
+  const authStore = useAuthStore();
+  const isAuthenticated = authStore.user;
+  if (to.meta.requireAuth && !isAuthenticated) {
+    return {
+      name: "login",
+      query: { redirect: to.fullPath },
+    };
+  }
 });
 
 export default router;

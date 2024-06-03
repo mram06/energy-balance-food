@@ -10,6 +10,7 @@ import {
   where,
   setDoc,
   getDoc,
+  arrayUnion,
 } from "firebase/firestore/lite";
 
 class DbOperations {
@@ -168,10 +169,37 @@ class DbOperations {
             currentArray = currentArray.filter(
               (item) => item.itemId !== itemToDelete
             );
-          console.log(currentArray);
 
           updateDoc(doc(this.dbCollection, id), {
             [arrayProperty]: currentArray,
+          })
+            .then(() => {
+              resolve(true);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        }
+      });
+    });
+  }
+
+  addOrderToArray(id, arrayProperty, value) {
+    return new Promise((resolve, reject) => {
+      this.getItemById(id).then((item) => {
+        if (item.ordersList) {
+          updateDoc(doc(this.dbCollection, id), {
+            [arrayProperty]: arrayUnion(value),
+          })
+            .then(() => {
+              resolve(true);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        } else {
+          this.addItemWithCustomId(id, {
+            [arrayProperty]: [value],
           })
             .then(() => {
               resolve(true);

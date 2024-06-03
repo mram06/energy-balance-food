@@ -27,13 +27,11 @@ export const useAuthStore = defineStore("auth", {
 
       localStorage.setItem("authCredential", JSON.stringify(credential));
     },
-    loginWithGoogle() {
+    async loginWithGoogle() {
       const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider)
+      await signInWithPopup(auth, provider)
         .then((loginResult) => {
           this.saveLoginUserData(loginResult);
-
-          //   this.saveCredential(credential);
         })
         .catch((error) => {
           const generalStore = useGeneralStore();

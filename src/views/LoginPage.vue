@@ -38,7 +38,7 @@
               <div>або</div>
               <div></div>
             </div>
-            <button @click="loginWithGoogle" class="login__with_google">
+            <button @click="onLoginWithGoogle" class="login__with_google">
               <span><img src="@/assets/icons/google.svg" /></span>Продовжити з
               Google
             </button>
@@ -82,6 +82,22 @@ export default {
       } else {
         this.signInEmailAndPassword(this.email, this.password);
       }
+      if (this.$route.query.redirect)
+        this.$router.push({
+          path: this.$route.query.redirect,
+        });
+      else this.$router.push({ path: "/" });
+    },
+    onLoginWithGoogle() {
+      this.loginWithGoogle().then(() => {
+        if (this.$route.query.redirect)
+          this.$router.push({
+            path: this.$route.query.redirect,
+          });
+        else this.$router.push({ path: "/" });
+      });
+
+      console.log("passed");
     },
   },
 };

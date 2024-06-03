@@ -103,14 +103,7 @@
           </div>
         </div>
       </div>
-      <div class="banner">
-        <div class="container">
-          <div class="banner__body">
-            <h2 class="banner__title">Харчуйся з користю разом з</h2>
-            <h2 class="banner__logo">Energy <span>Balance</span></h2>
-          </div>
-        </div>
-      </div>
+      <banner-block />
     </div>
   </main-master-page>
 </template>
@@ -118,12 +111,13 @@
 <script>
 import MainMasterPage from "@/masterpages/MainMasterPage.vue";
 import MenuItemPanel from "@/components/MenuItemPanel.vue";
+import BannerBlock from "@/components/BannerBlock.vue";
 import { mapActions, mapState } from "pinia";
 import { useItemsStore } from "@/store/modules/items";
 
 export default {
   name: "MenuView",
-  components: { MainMasterPage, MenuItemPanel },
+  components: { MainMasterPage, MenuItemPanel, BannerBlock },
   data() {
     return {
       activeCategory: null,
@@ -213,35 +207,7 @@ export default {
     }
   }
 }
-.banner {
-  &__body {
-    padding: 64px 0 48px 168px;
-    background: url("@/assets/img/qiwi.png") 80% 0 no-repeat,
-      linear-gradient(
-        180deg,
-        rgb(231, 202, 73) 0%,
-        rgb(232, 203, 73) 50.248%,
-        rgb(232, 203, 73) 100%
-      );
-  }
-  h2 {
-    max-width: 671px;
-  }
-  &__title {
-    color: white;
-  }
 
-  &__logo {
-    margin: 8px 0 0 0;
-    text-align: end;
-    line-height: 72px;
-    font-size: 60px;
-    color: white;
-    span {
-      font-style: italic;
-    }
-  }
-}
 .container {
 }
 </style>

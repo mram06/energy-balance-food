@@ -97,11 +97,6 @@ export default {
     align-items: center;
     &-price {
       font-family: "Raleway", sans-serif;
-      -webkit-font-feature-settings: "lnum";
-      -moz-font-feature-settings: "lnum";
-      -ms-font-feature-settings: "lnum";
-      -o-font-feature-settings: "lnum";
-      font-feature-settings: "lnum";
       font-size: 24px;
       font-weight: 700;
       line-height: 32px;

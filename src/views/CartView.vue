@@ -3,7 +3,10 @@
     <div class="container">
       <div class="cart__body">
         <h2>Ваше замовлення</h2>
-        <div @click="onEmptyCart" class="cart__reset">Очистити кошик</div>
+        <div @click="emptyCart" class="cart__reset">
+          <font-awesome-icon :icon="['fas', 'trash']" style="color: #404040" />
+          Очистити кошик
+        </div>
         <div class="cart__container">
           <div v-for="item in getLoadedCart" :key="item.id" class="cart__item">
             <div class="cart__item-img">
@@ -12,9 +15,19 @@
             <div class="cart__item-title">{{ item.title }}</div>
             <div class="cart__item-price">{{ item.price }} грн</div>
             <div class="cart__item-count">
-              <button @click="onCount(item.id, 'decrease')">-</button>
+              <button @click="onCount(item.id, 'decrease')">
+                <font-awesome-icon
+                  :icon="['fas', 'minus']"
+                  style="color: #ffffff"
+                />
+              </button>
               <div>{{ item.count }}</div>
-              <button @click="onCount(item.id, 'increase')">+</button>
+              <button @click="onCount(item.id, 'increase')">
+                <font-awesome-icon
+                  :icon="['fas', 'plus']"
+                  style="color: #ffffff"
+                />
+              </button>
             </div>
           </div>
         </div>
@@ -22,6 +35,9 @@
         <div class="cart__summary">
           <div class="cart__summary-title">Разом замовлення:</div>
           <div class="cart__summary-price">{{ getSummary }} грн</div>
+          <div class="cart__summary-order">
+            <button @click="onMakeOrder">Оформити замовлення</button>
+          </div>
         </div>
       </div>
     </div>
@@ -34,6 +50,7 @@ import { mapState, mapActions } from "pinia";
 import { useCartStore } from "@/store/modules/cart";
 import { useAuthStore } from "@/store/modules/auth";
 import { useItemsStore } from "@/store/modules/items";
+import { useOrdersStore } from "@/store/modules/orders";
 
 export default {
   name: "CartView",
@@ -45,6 +62,7 @@ export default {
     ...mapState(useAuthStore, ["user"]),
   },
   methods: {
+    ...mapActions(useOrdersStore, ["makeOrder"]),
     ...mapActions(useCartStore, [
       "addToCart",
       "deleteFromCart",
@@ -56,8 +74,8 @@ export default {
       if (operation === "increase") this.addToCart(this.user.uid, itemId);
       else this.deleteFromCart(this.user.uid, itemId);
     },
-    onEmptyCart() {
-      this.emptyCart(this.user.uid);
+    onMakeOrder() {
+      this.makeOrder().then(() => this.$router.push({ name: "orders" }));
     },
   },
   mounted() {
@@ -77,8 +95,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-}
 .cart {
   &__body {
     background: #f2f0ee;
@@ -87,6 +103,7 @@ export default {
   }
 
   &__reset {
+    cursor: pointer;
     margin: 24px 0 0 0;
   }
   &__container {
@@ -96,9 +113,10 @@ export default {
     gap: 24px;
   }
   &__item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr 1fr;
     align-items: center;
+    gap: 24px;
 
     border-radius: 4px;
     box-shadow: 8px 8px 16px 0px rgba(0, 0, 0, 0.22),
@@ -118,12 +136,17 @@ export default {
     }
 
     &-price {
+      justify-self: center;
     }
 
     &-count {
-      display: flex;
+      justify-self: end;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
       gap: 10px;
+
+      text-align: center;
       button {
         width: 40px;
         height: 40px;
@@ -139,10 +162,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
     &-title {
     }
 
     &-price {
+      margin-left: auto;
     }
   }
 }

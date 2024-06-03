@@ -32,7 +32,6 @@ export const useCartStore = defineStore("cart", {
   actions: {
     setItemsList(itemsList) {
       this.cartItemsList = itemsList;
-      this.isDataLoaded = true;
     },
     loadUserCart() {
       const generalStore = useGeneralStore();
@@ -72,12 +71,13 @@ export const useCartStore = defineStore("cart", {
         this.loadUserCart();
       }, 400);
     },
-    emptyCart(userId) {
+    emptyCart() {
       const generalStore = useGeneralStore();
+      const authStore = useAuthStore();
       generalStore.setError(null);
       generalStore.setLoading(true);
       collectionDB
-        .deleteItem(userId)
+        .deleteItem(authStore.user.uid)
         .catch((error) => generalStore.setError(error))
         .finally(() => generalStore.setLoading(false));
       setTimeout(() => {
