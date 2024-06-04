@@ -1,53 +1,56 @@
 <template>
   <div class="orders">
     <div class="orders__body">
-      <div class="orders__order">
-        <o-collapse
-          v-for="(order, index) in getLoadedOrders"
-          :key="index"
-          class="card"
-          animation="slide"
-          :open="position == index"
-          @open="
-            position = index;
-            isOpen = true;
-          "
-          @close="isOpen = false"
-        >
-          <template #trigger>
-            <div class="card-header" role="button">
-              <div class="card-header-row">
-                <div class="card-header-label"></div>
-                <div class="card-header-title">
-                  Замовлення № {{ order.date.seconds }},
-                  {{ new Date(order.date.seconds * 1000).toLocaleString() }}
+      <template v-if="getLoadedOrders">
+        <div class="orders__order">
+          <o-collapse
+            v-for="(order, index) in getLoadedOrders"
+            :key="index"
+            class="card"
+            animation="slide"
+            :open="position == index"
+            @open="
+              position = index;
+              isOpen = true;
+            "
+            @close="isOpen = false"
+          >
+            <template #trigger>
+              <div class="card-header" role="button">
+                <div class="card-header-row">
+                  <div class="card-header-label"></div>
+                  <div class="card-header-title">
+                    Замовлення № {{ order.date.seconds }},
+                    {{ new Date(order.date.seconds * 1000).toLocaleString() }}
+                  </div>
+                  <div class="card-header-summary">{{ order.summary }} грн</div>
                 </div>
-                <div class="card-header-summary">{{ order.summary }} грн</div>
+                <a class="card-header-icon">
+                  <img
+                    :class="{ open: position == index && isOpen === true }"
+                    src="@/assets/icons/arrow.svg"
+                  />
+                </a>
               </div>
-              <a class="card-header-icon">
-                <img
-                  :class="{ open: position == index && isOpen === true }"
-                  src="@/assets/icons/arrow.svg"
-                />
-              </a>
-            </div>
-          </template>
-          <div class="card-content">
-            <div
-              v-for="item in order.items"
-              :key="item.id"
-              class="orders__item"
-            >
-              <div class="orders__item-img">
-                <img :src="item.imgSrc" />
+            </template>
+            <div class="card-content">
+              <div
+                v-for="item in order.items"
+                :key="item.id"
+                class="orders__item"
+              >
+                <div class="orders__item-img">
+                  <img :src="item.imgSrc" />
+                </div>
+                <div class="orders__item-title">{{ item.title }}</div>
+                <div class="orders__item-count">{{ item.count }} шт.</div>
+                <div class="orders__item-price">{{ item.price }} грн</div>
               </div>
-              <div class="orders__item-title">{{ item.title }}</div>
-              <div class="orders__item-count">{{ item.count }} шт.</div>
-              <div class="orders__item-price">{{ item.price }} грн</div>
             </div>
-          </div>
-        </o-collapse>
-      </div>
+          </o-collapse>
+        </div>
+      </template>
+      <h2 v-else>Ви ще нічого не замовили</h2>
     </div>
   </div>
 </template>
@@ -79,6 +82,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h2 {
+  text-align: center;
+}
 .orders {
   &__body {
     padding: 80px 0;

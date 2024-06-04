@@ -54,7 +54,12 @@ const routes = [
       {
         path: "settings",
         name: "settings",
-        component: () => import("@/components/SettingsBlock"),
+        component: () => import("@/components/ContactsBlock"),
+      },
+      {
+        path: "my-features",
+        name: "myFeatures",
+        component: () => import("@/components/MyFeaturesBlock"),
       },
     ],
   },

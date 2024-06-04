@@ -8,7 +8,9 @@
               >Контактна інформація
             </router-link>
             <router-link :to="{ name: 'orders' }">Мої замовлення</router-link>
-            <router-link to="/">Мої особливості</router-link>
+            <router-link :to="{ name: 'myFeatures' }"
+              >Мої особливості</router-link
+            >
           </div>
           <router-view />
         </div>
