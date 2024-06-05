@@ -45,12 +45,12 @@
               </label>
               <label>
                 Індекс
-                <input v-model="userObj.postcode" type="number" />
+                <input v-model="userObj.postcode" type="text" />
               </label>
             </div>
           </div>
         </div>
-        <button>Зберегти</button>
+        <button @click="updateUserInfo(userObj)">Зберегти</button>
       </div>
     </div>
   </div>
@@ -74,25 +74,28 @@ export default {
     ...mapState(useAuthStore, ["user"]),
     ...mapState(useUsersStore, ["userInfo"]),
     getName() {
-      return this.user.displayName.split(" ");
+      console.log(this.user?.displayName);
+      return this.user?.displayName
+        ? this.user?.displayName?.split(" ")
+        : false;
     },
   },
   methods: {
-    ...mapActions(useUsersStore, ["getUser"]),
+    ...mapActions(useUsersStore, ["getUser", "updateUserInfo"]),
   },
   async created() {
     await this.getUser();
     this.userObj = {
-      name: this.userInfo.name || this.getName[0],
-      lastName: this.userInfo.lastName || this.getName[1],
+      name: this.userInfo.name || this.getName[0] || null,
+      lastName: this.userInfo.lastName || this.getName[1] || null,
       email: this.userInfo.email || this.user.email,
-      birthday: this.userInfo.birthday,
-      phone: this.userInfo.phone,
-      city: this.userInfo.city,
-      street: this.userInfo.street,
-      house: this.userInfo.house,
-      apartment: this.userInfo.apartment,
-      postcode: this.userInfo.postcode,
+      birthday: this.userInfo.birthday || null,
+      phone: this.userInfo.phone || null,
+      city: this.userInfo.city || null,
+      street: this.userInfo.street || null,
+      house: this.userInfo.house || null,
+      apartment: this.userInfo.apartment || null,
+      postcode: this.userInfo.postcode || null,
     };
   },
 };

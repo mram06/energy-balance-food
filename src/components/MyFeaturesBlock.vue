@@ -5,16 +5,46 @@
         <div class="features__title">
           Чи маєте алергію на якийсь інгредієнт?
         </div>
-        <textarea placeholder="Залишити коментар" class="features__comment" />
-        <button class="features__button">Зберегти</button>
+        <textarea
+          v-model="featuresObj.comment"
+          cols="10"
+          rows="3"
+          placeholder="Залишити коментар"
+          class="features__comment"
+        />
+        <button @click="updateUserInfo(featuresObj)" class="features__button">
+          Зберегти
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useUsersStore } from "@/store/modules/users";
+import { mapActions, mapState } from "pinia";
+
 export default {
   name: "MyFeaturesBlock",
+  data() {
+    return {
+      featuresObj: {
+        comment: null,
+      },
+    };
+  },
+  computed: {
+    ...mapState(useUsersStore, ["userInfo"]),
+  },
+  methods: {
+    ...mapActions(useUsersStore, ["getUser", "updateUserInfo"]),
+  },
+  async created() {
+    await this.getUser();
+    this.featuresObj = {
+      comment: this.userInfo.comment || null,
+    };
+  },
 };
 </script>
 

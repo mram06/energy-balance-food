@@ -61,8 +61,8 @@ export const useAuthStore = defineStore("auth", {
         } else resolve(false);
       });
     },
-    signUpWithEmailAndPassword(email, password) {
-      createUserWithEmailAndPassword(auth, email, password)
+    async signUpWithEmailAndPassword(email, password) {
+      await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           this.user = userCredential.user;
         })
@@ -72,8 +72,8 @@ export const useAuthStore = defineStore("auth", {
           console.log(error);
         });
     },
-    signInEmailAndPassword(email, password) {
-      signInWithEmailAndPassword(auth, email, password)
+    async signInEmailAndPassword(email, password) {
+      await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           this.user = userCredential.user;
         })

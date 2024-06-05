@@ -11,10 +11,26 @@ export const useUsersStore = defineStore("users", {
   }),
   getters: {},
   actions: {
-    updateUserInfo() {
+    async updateUserInfo(userObj) {
       const generalStore = useGeneralStore();
+      const authStore = useAuthStore();
+
       generalStore.setError(null);
       generalStore.setLoading(true);
+
+      const user = await collectionDB.getItemById(authStore.user.uid);
+
+      if (Object.keys(user).length === 0) {
+        collectionDB
+          .addItemWithCustomId(authStore.user.uid, userObj)
+          .then(() => generalStore.setLoading(false))
+          .catch((error) => generalStore.setError(error));
+      } else {
+        collectionDB
+          .updateItem(authStore.user.uid, userObj)
+          .then(() => generalStore.setLoading(false))
+          .catch((error) => generalStore.setError(error));
+      }
     },
     async getUser() {
       const authStore = useAuthStore();

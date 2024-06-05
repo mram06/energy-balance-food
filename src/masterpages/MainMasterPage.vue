@@ -16,7 +16,8 @@
           <div class="header__tools">
             <template v-if="user">
               <div @click="onLogin" class="header__tools-profile">
-                <img :src="user.photoURL" />
+                <img v-if="user.photoURL" :src="user.photoURL" />
+                <img v-else src="@/assets/icons/profile2.svg" />
               </div>
               <div @click="logout" class="header__tools-logout">Вихід</div>
             </template>

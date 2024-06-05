@@ -78,15 +78,22 @@ export default {
     ]),
     onAction() {
       if (this.$route.name === "signup") {
-        this.signUpWithEmailAndPassword(this.email, this.password);
-      } else {
-        this.signInEmailAndPassword(this.email, this.password);
-      }
-      if (this.$route.query.redirect)
-        this.$router.push({
-          path: this.$route.query.redirect,
+        this.signUpWithEmailAndPassword(this.email, this.password).then(() => {
+          if (this.$route.query.redirect)
+            this.$router.push({
+              path: this.$route.query.redirect,
+            });
+          else this.$router.push({ path: "/" });
         });
-      else this.$router.push({ path: "/" });
+      } else {
+        this.signInEmailAndPassword(this.email, this.password).then(() => {
+          if (this.$route.query.redirect)
+            this.$router.push({
+              path: this.$route.query.redirect,
+            });
+          else this.$router.push({ path: "/" });
+        });
+      }
     },
     onLoginWithGoogle() {
       this.loginWithGoogle().then(() => {
