@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2>Сталася помилка</h2>
-    <div @click="setError(null)" class="close-icon" />
+    <div @click="clearError" class="close-icon" />
   </div>
 </template>
 
@@ -12,18 +12,22 @@ export default {
   name: "ErrorPage",
   methods: {
     ...mapActions(useGeneralStore, ["setError"]),
+    clearError() {
+      localStorage.clear("authCredential");
+      this.setError(null);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .container {
-  left: calc(50vw - (500px / 2));
+  left: calc(50vw - (400px / 2));
   position: fixed;
   z-index: 50;
   background-color: rgba(red, 0.5);
 
-  width: 500px;
+  width: 400px;
   height: 100px;
   border-radius: 25px;
   text-align: center;

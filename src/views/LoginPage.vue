@@ -207,4 +207,22 @@ export default {
     }
   }
 }
+
+@media only screen and (max-width: 550px) {
+  .login {
+    &__body {
+      width: auto;
+    }
+  }
+  .page-body {
+    padding: 48px 10px;
+  }
+}
+@media only screen and (max-width: 470px) {
+  .login {
+    &__body {
+      padding: 20px;
+    }
+  }
+}
 </style>

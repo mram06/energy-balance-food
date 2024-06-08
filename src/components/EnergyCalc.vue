@@ -286,6 +286,7 @@ export default {
   &__row {
     display: flex;
     justify-content: space-between;
+    gap: 16px;
     :first-child {
       max-width: 490px;
     }
@@ -411,5 +412,27 @@ export default {
 }
 .selected {
   border: 1px solid rgb(239, 119, 42);
+}
+
+@media only screen and (max-width: 1070px) {
+  .calc {
+    &__body {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+}
+@media only screen and (max-width: 850px) {
+  .calc {
+    &__row {
+      display: flex;
+      max-width: 500px;
+      margin: 0 auto;
+      flex-direction: column;
+    }
+    &__input-body {
+      max-width: 100%;
+    }
+  }
 }
 </style>

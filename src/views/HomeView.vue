@@ -262,7 +262,6 @@ export default {
     box-shadow: 8px 8px 16px 0px rgba(0, 0, 0, 0.22),
       4px 4px 8px 0px rgba(0, 0, 0, 0.12);
     background-color: white;
-    width: 280px;
     padding: 16px;
     &-img {
       border-bottom: 1px solid rgb(136, 136, 136);
@@ -402,6 +401,49 @@ export default {
       font-size: 78.18px;
       line-height: 87.96px;
       text-align: center;
+    }
+  }
+}
+
+@media only screen and (max-width: 1150px) {
+  .advantages {
+    &__body {
+      flex-wrap: wrap;
+    }
+  }
+}
+@media only screen and (max-width: 900px) {
+  .hero,
+  .about,
+  .advantages,
+  .faq,
+  .discount {
+    &__body {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+}
+@media only screen and (max-width: 500px) {
+  .advantages {
+    &__cards {
+      gap: 16px;
+    }
+  }
+}
+@media only screen and (max-width: 500px) {
+  .discount {
+    &__body {
+      text-align: center;
+      display: block;
+    }
+    &__label {
+      display: none;
+    }
+    &__info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
 }

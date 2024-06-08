@@ -1,6 +1,13 @@
 <template>
   <div class="wrapper">
-    <header class="header">
+    <header
+      :class="[
+        'header',
+        {
+          open: isOpen,
+        },
+      ]"
+    >
       <div class="container">
         <div class="header__body">
           <router-link to="/"
@@ -35,6 +42,9 @@
                 <div class="header__tools-count">{{ getItemsCount }}</div>
               </template>
             </div>
+          </div>
+          <div @click="onOpenMenu" class="header__burger-btn">
+            <span /><span /><span />
           </div>
         </div>
       </div>
@@ -101,6 +111,11 @@ export default {
     LoadingPage,
     ErrorPage,
   },
+  data() {
+    return {
+      isOpen: false,
+    };
+  },
   computed: {
     ...mapState(useAuthStore, ["user"]),
     ...mapState(useGeneralStore, ["loading", "error"]),
@@ -110,6 +125,9 @@ export default {
     ...mapActions(useAuthStore, ["loginWithCredential", "logout"]),
     onLogin() {
       this.$router.push({ name: "profile" });
+    },
+    onOpenMenu() {
+      this.isOpen = !this.isOpen;
     },
   },
   mounted() {
@@ -150,6 +168,8 @@ export default {
     gap: 16px;
 
     &-profile {
+      display: flex;
+      align-items: center;
       cursor: pointer;
       img {
         width: 24px;
@@ -158,10 +178,14 @@ export default {
       }
     }
     &-logout {
+      display: flex;
+      align-items: center;
       cursor: pointer;
     }
 
     &-cart {
+      display: flex;
+      align-items: center;
       position: relative;
       cursor: pointer;
     }
@@ -182,6 +206,47 @@ export default {
       font-size: 10px;
       color: white;
     }
+  }
+  &__burger-btn {
+    display: none;
+    position: relative;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    span {
+      position: absolute;
+      left: 5px;
+
+      width: 30px;
+      height: 3px;
+      background-color: #ef772a;
+      transition: transform 0.5s, opacity 0.5s;
+
+      &:nth-child(1) {
+        transform: translateY(7px);
+      }
+      &:nth-child(2) {
+        transform: translateY(18px);
+      }
+      &:nth-child(3) {
+        transform: translateY(30px);
+      }
+    }
+  }
+  &.open &__burger-btn {
+    span:nth-child(1) {
+      transform: translateY(18px) rotate(-45deg);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: translateY(18px) rotate(45deg);
+    }
+  }
+  a {
+    display: flex;
+    align-items: center;
   }
 }
 .footer {
@@ -261,6 +326,80 @@ export default {
     display: flex;
     justify-content: flex-end;
     margin: 32px 0 0 0;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .header {
+    &__body {
+      padding: 20px 10px;
+    }
+  }
+  .advantages {
+    &__body {
+      padding: 20px 10px;
+    }
+  }
+  .footer {
+    &__body {
+      padding: 48px 10px;
+    }
+    &__menu {
+      gap: 16px;
+    }
+  }
+}
+
+@media only screen and (max-width: 570px) {
+  .header {
+    &__burger-btn {
+      display: block;
+    }
+    &__body {
+      padding: 10px 10px;
+    }
+    &__menu {
+      display: block;
+      flex-direction: column;
+      background-color: rgb(196, 196, 196);
+      position: absolute;
+      top: 0;
+      left: -350px;
+
+      width: 350px;
+      height: 100vh;
+
+      padding: 70px 20px 20px 20px;
+      transition: transform 0.5s;
+      a {
+        padding: 10px 0;
+      }
+    }
+    &__tools {
+      position: absolute;
+      opacity: 0;
+      left: 0;
+      padding: 0 0 0 20px;
+      transition: opacity 1s;
+    }
+    &.open &__menu {
+      transform: translateX(100%);
+    }
+    &.open &__tools {
+      opacity: 100;
+    }
+  }
+  .footer {
+    &__body {
+      padding: 26px 20px;
+    }
+    &__row {
+      flex-direction: column;
+      gap: 26px;
+    }
+    &__policy {
+      margin: 0 auto;
+    }
   }
 }
 </style>

@@ -82,8 +82,8 @@ export default {
     padding: 4px;
     margin: 32px 0 0 0;
     display: flex;
+    gap: 14px;
     justify-content: space-between;
-    gap: 4px;
   }
 
   &__card {
@@ -119,6 +119,36 @@ export default {
     }
     button {
       width: 221px;
+    }
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .programs__row {
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .programs {
+    &__body {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    &__about {
+      padding: 0 20px;
+    }
+  }
+}
+@media only screen and (max-width: 420px) {
+  .programs {
+    &__card {
+      width: 100%;
+      &-img {
+        img {
+          width: 100%;
+        }
+      }
     }
   }
 }
