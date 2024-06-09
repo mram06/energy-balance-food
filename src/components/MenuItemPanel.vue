@@ -147,4 +147,13 @@ export default {
     }
   }
 }
+@media only screen and (max-width: 1150px) {
+  .menu {
+    &__category {
+      &-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
 </style>

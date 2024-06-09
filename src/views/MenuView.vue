@@ -208,6 +208,22 @@ export default {
   }
 }
 
-.container {
+@media only screen and (max-width: 900px) {
+  .menu-row {
+    padding: 0 0 0 20px;
+  }
+  .menu {
+    &__body {
+      padding: 48px 20px 48px 20px;
+    }
+  }
+}
+@media only screen and (max-width: 570px) {
+  .aside {
+    display: none;
+  }
+  .menu-row {
+    padding: 0;
+  }
 }
 </style>

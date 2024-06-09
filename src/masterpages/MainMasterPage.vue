@@ -332,7 +332,7 @@ export default {
 @media only screen and (max-width: 900px) {
   .header {
     &__body {
-      padding: 20px 10px;
+      padding: 20px;
     }
   }
   .advantages {
@@ -356,7 +356,7 @@ export default {
       display: block;
     }
     &__body {
-      padding: 10px 10px;
+      padding: 20px 20px;
     }
     &__menu {
       display: block;
@@ -372,6 +372,7 @@ export default {
       padding: 70px 20px 20px 20px;
       transition: transform 0.5s;
       a {
+        font-size: 24px;
         padding: 10px 0;
       }
     }
@@ -381,6 +382,10 @@ export default {
       left: 0;
       padding: 0 0 0 20px;
       transition: opacity 1s;
+      img {
+        width: 36px;
+        height: 36px;
+      }
     }
     &.open &__menu {
       transform: translateX(100%);

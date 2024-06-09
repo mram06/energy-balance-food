@@ -45,4 +45,11 @@ export default {
     }
   }
 }
+@media only screen and (max-width: 900px) {
+  .banner {
+    &__body {
+      padding: 64px 20px 48px 20px;
+    }
+  }
+}
 </style>
