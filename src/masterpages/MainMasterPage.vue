@@ -178,14 +178,12 @@ export default {
       }
     }
     &-logout {
-      display: flex;
-      align-items: center;
+      align-self: center;
       cursor: pointer;
     }
 
     &-cart {
-      display: flex;
-      align-items: center;
+      align-self: center;
       position: relative;
       cursor: pointer;
     }
@@ -356,7 +354,8 @@ export default {
       display: block;
     }
     &__body {
-      padding: 20px 20px;
+      padding: 12px 20px;
+      gap: 16px;
     }
     &__menu {
       display: block;
@@ -377,20 +376,34 @@ export default {
       }
     }
     &__tools {
-      position: absolute;
-      opacity: 0;
-      left: 0;
-      padding: 0 0 0 20px;
-      transition: opacity 1s;
-      img {
-        width: 36px;
-        height: 36px;
+      margin-left: auto;
+      &-profile,
+      &-logout {
+        position: absolute;
+        opacity: 0;
+        left: 0;
+        padding: 0 0 0 20px;
+        transition: opacity 0.3s;
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+      &-logout {
+        left: 52px;
+      }
+      &-cart {
+        img {
+          width: 36px;
+          height: 36px;
+        }
       }
     }
     &.open &__menu {
       transform: translateX(100%);
     }
-    &.open &__tools {
+    &.open &__tools-profile,
+    &.open &__tools-logout {
       opacity: 100;
     }
   }

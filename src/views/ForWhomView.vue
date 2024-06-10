@@ -45,7 +45,9 @@ export default {
   &__row {
     display: flex;
     justify-content: space-between;
+    gap: 32px;
     &-title {
+      flex-grow: 1;
       span {
         color: white;
       }
@@ -59,6 +61,37 @@ export default {
     }
   }
 }
-.container {
+@media only screen and (max-width: 1160px) {
+  .forwho {
+    &__body {
+      padding: 48px 20px;
+    }
+
+    &__row {
+      &-title {
+      }
+
+      &-text {
+        max-width: 400px;
+      }
+    }
+  }
+}
+@media only screen and (max-width: 900px) {
+  .forwho {
+    &__body {
+    }
+    &__row {
+      flex-direction: column;
+      align-items: center;
+      &-title {
+        text-align: center;
+      }
+      &-text {
+        text-align: center;
+        max-width: 592px;
+      }
+    }
+  }
 }
 </style>

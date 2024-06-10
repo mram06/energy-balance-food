@@ -2,43 +2,53 @@
   <main-master-page>
     <div class="container">
       <div class="cart__body">
-        <h2>Ваше замовлення</h2>
-        <div @click="emptyCart" class="cart__reset">
-          <font-awesome-icon :icon="['fas', 'trash']" style="color: #404040" />
-          Очистити кошик
-        </div>
-        <div class="cart__container">
-          <div v-for="item in getLoadedCart" :key="item.id" class="cart__item">
-            <div class="cart__item-img">
-              <img :src="item.imgSrc" />
-            </div>
-            <div class="cart__item-title">{{ item.title }}</div>
-            <div class="cart__item-price">{{ item.price }} грн</div>
-            <div class="cart__item-count">
-              <button @click="onCount(item.id, 'decrease')">
-                <font-awesome-icon
-                  :icon="['fas', 'minus']"
-                  style="color: #ffffff"
-                />
-              </button>
-              <div>{{ item.count }}</div>
-              <button @click="onCount(item.id, 'increase')">
-                <font-awesome-icon
-                  :icon="['fas', 'plus']"
-                  style="color: #ffffff"
-                />
-              </button>
+        <template v-if="getLoadedCart">
+          <h2>Ваше замовлення</h2>
+          <div @click="emptyCart" class="cart__reset">
+            <font-awesome-icon
+              :icon="['fas', 'trash']"
+              style="color: #404040"
+            />
+            Очистити кошик
+          </div>
+          <div class="cart__container">
+            <div
+              v-for="item in getLoadedCart"
+              :key="item.id"
+              class="cart__item"
+            >
+              <div class="cart__item-img">
+                <img :src="item.imgSrc" />
+              </div>
+              <div class="cart__item-title">{{ item.title }}</div>
+              <div class="cart__item-price">{{ item.price }} грн</div>
+              <div class="cart__item-count">
+                <button @click="onCount(item.id, 'decrease')">
+                  <font-awesome-icon
+                    :icon="['fas', 'minus']"
+                    style="color: #ffffff"
+                  />
+                </button>
+                <div>{{ item.count }}</div>
+                <button @click="onCount(item.id, 'increase')">
+                  <font-awesome-icon
+                    :icon="['fas', 'plus']"
+                    style="color: #ffffff"
+                  />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="cart__summary">
-          <div class="cart__summary-title">Разом замовлення:</div>
-          <div class="cart__summary-price">{{ getSummary }} грн</div>
-          <div class="cart__summary-order">
-            <button @click="onMakeOrder">Оформити замовлення</button>
+          <div class="cart__summary">
+            <div class="cart__summary-title">Разом замовлення:</div>
+            <div class="cart__summary-price">{{ getSummary }} грн</div>
+            <div class="cart__summary-order">
+              <button @click="onMakeOrder">Оформити замовлення</button>
+            </div>
           </div>
-        </div>
+        </template>
+        <h2 v-else>Кошик порожній</h2>
       </div>
     </div>
   </main-master-page>
@@ -78,8 +88,8 @@ export default {
       this.makeOrder().then(() => this.$router.push({ name: "orders" }));
     },
   },
-  mounted() {
-    this.loadList();
+  async mounted() {
+    await this.loadList();
   },
   watch: {
     user: {
@@ -168,6 +178,43 @@ export default {
 
     &-price {
       margin-left: auto;
+    }
+  }
+}
+@media only screen and (max-width: 900px) {
+  .cart {
+    &__body {
+      padding: 48px 20px;
+    }
+  }
+}
+@media only screen and (max-width: 660px) {
+  .cart {
+    &__item {
+      grid-template-columns: 50px 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      &-img {
+        img {
+          width: 50px;
+        }
+      }
+      &-title {
+        grid-column: span 2;
+      }
+      &-price {
+        text-align: left;
+        grid-column-start: 2;
+      }
+    }
+    &__summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      &-order {
+        grid-column: span 2;
+        button {
+          width: 100%;
+        }
+      }
     }
   }
 }

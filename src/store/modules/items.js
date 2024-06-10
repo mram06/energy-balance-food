@@ -35,12 +35,12 @@ export const useItemsStore = defineStore("items", {
       this.isDataLoaded = true;
     },
     // Метод завантаження списку товарів з бази даних
-    loadList() {
+    async loadList() {
       const generalStore = useGeneralStore();
       generalStore.setError(null);
       generalStore.setLoading(true);
 
-      collectionDB
+      await collectionDB
         .loadItemsList()
         .then((list) => {
           this.setItemsList(list);

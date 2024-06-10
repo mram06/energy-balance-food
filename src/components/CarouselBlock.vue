@@ -104,6 +104,11 @@ export default {
   }
 
   &__img {
+    border-radius: 4px;
+    height: 480px;
+    img {
+      height: 100%;
+    }
   }
 
   &__about {
@@ -115,6 +120,53 @@ export default {
 
     &-text {
       margin: 8px 0 0 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .slide {
+    border-radius: 8px;
+    padding: 16px 16px 40px 16px;
+
+    background-color: white;
+    &__row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+    &__about {
+      height: 220px;
+    }
+    &__img {
+      width: 100%;
+      height: 500px;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+@media only screen and (max-width: 660px) {
+  .carousel {
+    display: block;
+
+    &__button {
+      display: none;
+    }
+  }
+}
+@media only screen and (max-width: 490px) {
+  .slide {
+    &__img {
+      width: 100%;
+      height: 400px;
+    }
+    &__about {
+      height: 300px;
     }
   }
 }
