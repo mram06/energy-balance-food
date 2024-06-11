@@ -52,6 +52,7 @@
     <main class="content">
       <loading-page v-if="loading" />
       <error-page v-else-if="error" />
+      <message-block v-if="message" />
       <slot></slot>
     </main>
     <footer class="footer">
@@ -103,6 +104,7 @@ import { useGeneralStore } from "@/store/general";
 import { mapActions, mapState } from "pinia";
 import LoadingPage from "@/components/LoadingPage";
 import ErrorPage from "@/components/ErrorPage";
+import MessageBlock from "@/components/MessageBlock";
 import { useCartStore } from "@/store/modules/cart";
 
 export default {
@@ -110,6 +112,7 @@ export default {
   components: {
     LoadingPage,
     ErrorPage,
+    MessageBlock,
   },
   data() {
     return {
@@ -118,7 +121,7 @@ export default {
   },
   computed: {
     ...mapState(useAuthStore, ["user"]),
-    ...mapState(useGeneralStore, ["loading", "error"]),
+    ...mapState(useGeneralStore, ["loading", "error", "message"]),
     ...mapState(useCartStore, ["getItemsCount"]),
   },
   methods: {

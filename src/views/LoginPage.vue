@@ -217,6 +217,9 @@ export default {
   .page-body {
     padding: 48px 10px;
   }
+  .title {
+    display: none;
+  }
 }
 @media only screen and (max-width: 470px) {
   .login {

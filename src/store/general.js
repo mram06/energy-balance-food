@@ -4,6 +4,7 @@ export const useGeneralStore = defineStore("general", {
   state: () => ({
     loading: false,
     error: null,
+    message: null,
   }),
   getters: {},
   actions: {
@@ -12,6 +13,9 @@ export const useGeneralStore = defineStore("general", {
     },
     setLoading(value) {
       this.loading = value;
+    },
+    setMessage(message) {
+      this.message = message;
     },
   },
 });

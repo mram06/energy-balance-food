@@ -59,4 +59,33 @@ export default {
     }
   }
 }
+@media only screen and (max-width: 900px) {
+  .profile {
+    &__body {
+      padding: 48px 20px;
+    }
+
+    &__tabs {
+      a {
+        text-align: center;
+        height: auto;
+      }
+      .router-link-exact-active {
+      }
+    }
+  }
+}
+@media only screen and (max-width: 570px) {
+  .profile {
+    &__body {
+    }
+
+    &__tabs {
+      flex-direction: column;
+      a {
+        text-align: center;
+      }
+    }
+  }
+}
 </style>

@@ -172,4 +172,43 @@ button {
   border-radius: 20px;
   border: 1px solid rgb(239, 119, 42);
 }
+
+@media only screen and (max-width: 900px) {
+  .contacts {
+    &__row {
+    }
+    &__address-info {
+      label {
+        max-width: 300px;
+      }
+    }
+    &__address-row {
+      label {
+        max-width: 90px;
+      }
+    }
+  }
+}
+@media only screen and (max-width: 670px) {
+  .contacts {
+    &__row {
+      grid-template-columns: 1fr;
+    }
+    &__user-info {
+      label {
+        max-width: 85vw;
+      }
+    }
+    &__address-info {
+      label {
+        max-width: 85vw;
+      }
+    }
+    &__address-row {
+      label {
+        max-width: 25vw;
+      }
+    }
+  }
+}
 </style>

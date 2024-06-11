@@ -28,6 +28,7 @@
 import { mapState, mapActions } from "pinia";
 import { useCartStore } from "@/store/modules/cart";
 import { useAuthStore } from "@/store/modules/auth";
+import { useGeneralStore } from "@/store/general";
 // Дані для відображення інформації про товар надходять через батьківський елемент у вигляді об'єкта, який отримує дані з БД
 export default {
   name: "MenuItem",
@@ -42,10 +43,13 @@ export default {
     ...mapState(useAuthStore, ["user"]),
   },
   methods: {
+    ...mapActions(useGeneralStore, ["setMessage"]),
     ...mapActions(useCartStore, ["addToCart"]),
     onAddToCart(itemId) {
       if (this.user) {
         this.addToCart(this.user.uid, itemId);
+      } else {
+        this.setMessage("Увійдіть, щоб додати до кошика");
       }
     },
   },
